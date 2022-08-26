@@ -1,3 +1,5 @@
+import { wait_for } from "./product_page"
+
 export const emptyBrandName=()=>{
     cy.get('.ti-package').realHover()
     cy.wait(2000)
@@ -6,6 +8,7 @@ export const emptyBrandName=()=>{
     cy.get('.btn').click()
     cy.get('input[formcontrolname="name"]').type(" ")
     cy.get('.ng-input > input').click().type("Stephanie")
+    wait_for(4)
     cy.get('.ng-option-label:contains("Stephanie")').first().click()
     cy.get('textarea[formcontrolname="description"]').clear().type("Black Hair")
     cy.get('form > .btn').click()

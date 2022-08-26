@@ -1,3 +1,4 @@
+import { wait_for } from "./product_page"
 
 export const createManufacturerWithBlankName=()=>{
        cy.get('.ti-package').realHover()
@@ -7,6 +8,7 @@ export const createManufacturerWithBlankName=()=>{
        cy.get('input[formcontrolname="name"]').type(" ")
        cy.get('textarea[formcontrolname="address"]').type("Lekki, Lagos")
        cy.get('form > .btn').click()
+       wait_for(7)
        cy.get('#swal2-title').should("have.text","Error")
        cy.get('.swal2-confirm').click()
 }

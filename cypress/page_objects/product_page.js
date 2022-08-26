@@ -5,7 +5,7 @@ export const hover_btn = (value) => {
 };
 
 export const wait_for= (sec)=>{
-    cy.get(sec * 1000)
+    cy.wait(sec * 1000)
 }
 
 export const get_find_click=(get_value, find_value)=>{
@@ -45,6 +45,6 @@ export const awaitingApproval = (value)=>{
     cy.get(':nth-child(1) > :nth-child(4) > .mrg-top-10 > .user-profile > .dropdown-toggle > .fa').click()
     cy.get(':nth-child(1) > :nth-child(4) > .mrg-top-10 > .user-profile > .dropdown-menu > :nth-child(1) > .ng-star-inserted > .ti-check').click()
     cy.get('.swal2-confirm').click()
-    cy.get('#swal2-content').should("have.text", "Successfully Approveed")
+    cy.get('#swal2-title').should("have.text","Success")
     cy.get('.swal2-confirm').click()
 }

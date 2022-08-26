@@ -2,6 +2,8 @@ import {navigate,valid_login,logout} from "../page_objects/Login_page"
 import {createManufacturer,createManufacturerWithBlankName,createManufacturerWithDuplicateName} from "../page_objects/manufacturer_page"
 import {createDuplicateBrand,createBrandForManufacturer,emptyBrandName} from "../page_objects/brand_page"
 import {hover_btn, wait_for,get_and_click,get_find_click,select_and_type, submit, loop_selector,awaitingApproval, product_name} from "../page_objects/product_page"
+const time = Date.now()
+
 describe("Login to Sabi", ()=>{
     after(()=>{
         logout()
@@ -49,32 +51,24 @@ describe("Create a Product with a Blank Name", ()=>{
         get_and_click(".ti-plus")
     })
     afterEach(()=>{
-        wait_for(2)
+        cy.wait(2000)
+    })
+    after(()=>{
+        logout()
     })
     it("Enter product name", ()=>{
         select_and_type('input[formcontrolname="name"]', " ")
-    })
-    it("Enter Brand name", ()=>{
-        select_and_type('.ng-select > :contains("Select Brand")', "girlinred")
-        wait_for(2)
-        loop_selector(".ng-dropdown-panel-items>div:nth-child(2)",".ng-option", "girlinred")
-    })
-    it("Enter Manufacturer's name", ()=>{
-        select_and_type('.ng-select > :contains("Select Manufacturer")', "Stephanie{enter}")
-        wait_for(2)
-    })
-    it("Enter Product's Category", ()=>{
+        cy.get(':nth-child(2) > .col-md-12 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click().type("girlinred")       
+        wait_for(6)
+        cy.get('.ng-option-label:contains("girlinred")').first().click()
+        cy.get(':nth-child(3) > .col-md-12 > .ng-select > .ng-select-container').click().type("Stephanie")
+        wait_for(6)
+        cy.get('.ng-option-label:contains("Stephanie")').first().click()
         select_and_type('.ng-select > :contains("Select Category")', "Fashion{enter}")
         wait_for(2)
-    })
-    it("Enter Product's Sub-Category", ()=>{
         select_and_type('.ng-select > :contains("Select Sub-category")', "WOMEN FASHION{enter}")
         wait_for(2)
-    })
-    it("Enter Product Description", ()=>{
         select_and_type('textarea[formcontrolname="description"]', "Black Hair")
-    })
-    it("Submit Form", ()=>{
         submit()
         cy.get('#swal2-content').should("have.text","undefined")
         cy.get('.swal2-confirm').click()
@@ -87,32 +81,25 @@ describe("Create a Product", ()=>{
         wait_for(2)
     })
     it("Enter product name", ()=>{
-        cy.get('input.ng-invalid.ng-touched').should("have.css", "border","1px solid red")
-        cy.get('input[formcontrolname="name"]').clear()
-        select_and_type('input[formcontrolname="name"]', product_name)
-    })
-    it("Enter Brand name", ()=>{
+            valid_login("bi@yopmail.com", "Ren@1234567")
+            hover_btn(".ti-package")
+            get_and_click('.title:contains("Products")')
+            get_and_click('a:contains("Product Catalog")')
+            get_and_click(".ti-plus")
+        cy.get('input[formcontrolname="name"]').clear().type("irishcream" + time)
         select_and_type('.ng-select > :contains("Select Brand")', "girlinred")
-        wait_for(2)
+        wait_for(8)
         loop_selector(".ng-dropdown-panel-items>div:nth-child(2)",".ng-option", "girlinred")
-    })
-    it("Enter Manufacturer's name", ()=>{
-        select_and_type('.ng-select > :contains("Select Manufacturer")', "Stephanie{enter}")
-        wait_for(2)
-    })
-    it("Enter Product's Category", ()=>{
+        select_and_type('.ng-select > :contains("Select Manufacturer")', "Stephanie")
+        cy.get('.ng-option-label:contains("Stephanie")').first().click()
         select_and_type('.ng-select > :contains("Select Category")', "Fashion{enter}")
-        wait_for(2)
-    })
-    it("Enter Product's Sub-Category", ()=>{
+        wait_for(5)
         select_and_type('.ng-select > :contains("Select Sub-category")', "WOMEN FASHION{enter}")
-        wait_for(2)
-    })
-    it("Enter Product Description", ()=>{
+        wait_for(5)
         select_and_type('textarea[formcontrolname="description"]', "Black Hair")
-    })
-    it("Submit Form", ()=>{
         submit()
+        cy.get('#swal2-content').should("have.text", "Product Catelogue was succesfully created")
+        cy.get('.swal2-confirm').click()
     })
 })
 
@@ -130,6 +117,7 @@ describe("Approve Product", ()=>{
     })
 
     it("approve product", ()=>{
-        awaitingApproval(product_name)
+        awaitingApproval("irishcream" + time)
+
     })
 })
